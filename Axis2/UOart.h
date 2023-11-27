@@ -7,16 +7,16 @@
  *
  * 55r,56(x) Mods, and Axis2 re-build by:
  * Copyright (C) Benoit Croussette 2004-2006
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  **********************************************************************
 
 */
@@ -42,7 +42,7 @@ public:
 class CDefArray : public CPtrArray, public CDefObj
 {
 public:
-	int Insert(CDefObj * pDef);
+	int Insert(CDefObj* pDef);
 	int Find(WORD wFind);
 };
 
@@ -73,11 +73,14 @@ public:
 class CMultiRec
 {
 public:
+	CMultiRec() : hue(0) { }
+
 	WORD wIndex;
 	short x;
 	short y;
 	short z;
 	DWORD dwFlags;
+	DWORD hue;
 };
 
 class ArtAddress
@@ -90,17 +93,78 @@ public:
 	DWORD dwCompressedSize;
 };
 
+#pragma pack(push, 1)
+struct OldLandTileData
+{
+	DWORD flags;
+	WORD texID;
+	char name[20];
+};
+#pragma pack(pop) 
+
+#pragma pack(push, 1)
+struct NewLandTileData
+{
+	DWORD flags;
+	DWORD unk1;
+	WORD texID;
+	char name[20];
+};
+#pragma pack(pop) 
+
+#pragma pack(push, 1)
+struct OldItemTileData
+{
+	DWORD Flags;
+	char Weight;
+	char Quality;
+	WORD Unknown;
+	char Unknown1;
+	char Quantity;
+	WORD AnimID;
+	char Unknown2;
+	char Hue;
+	WORD Unknown3;
+	char Height;
+	char Name[20];
+};
+#pragma pack(pop) 
+
+#pragma pack(push, 1)
+struct NewItemTileData
+{
+	DWORD Flags;
+	DWORD Unknown;
+	char Weight;
+	char Quality;
+	WORD Unknown1;
+	char Unknown2;
+	char Quantity;
+	WORD AnimID;
+	char Unknown3;
+	char Hue;
+	WORD Unknown4;
+	char Height;
+	char Name[20];
+};
+#pragma pack(pop) 
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CUOArt class
 
 class CUOArt : public CWnd
 {
-// Constructor
+	OldLandTileData* GetOldLandTileData(int id);
+	NewLandTileData* GetNewLandTileData(int id);
+	OldItemTileData* GetOldItemTile(int id);
+	NewItemTileData* GetNewItemTile(int id);
+	// Constructor
 public:
 	CUOArt();
 	~CUOArt();
 
-// Implementation
+	// Implementation
 protected:
 	void RedrawArt(CPaintDC* pdc, const CRect& rcBounds);
 	void DrawArt(short sArtType, CRect bounds, DWORD dwArtIndex, short dx, short dy, short dz, WORD wColor = 0, WORD wFlags = 0);
@@ -110,10 +174,11 @@ protected:
 	DWORD BlendColors(WORD wBaseColor, WORD wAppliedColor, bool bBlendMode);
 	DWORD ScaleColor(WORD wColor);
 
-	BYTE m_tiledata [0x191800];
+	BYTE m_TileData[0x30A800];
 	WORD m_wArtWidth[0x10000];
 	WORD m_wArtHeight[0x10000];
 	bool m_bArtDataLoaded;
+	bool m_bIsUOAHS;
 	void LoadArtData();
 	void LoadTiledata();
 
@@ -148,7 +213,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-// Attributes
+	// Attributes
 public:
 
 	int m_wFrame;
@@ -175,7 +240,7 @@ public:
 	long GetBkColor();
 	void SetBkColor(long color);
 
-	CBitmap * OnCreateIcon(int iBitWidth, int iBitHeight, int iID, WORD wAppliedColor, int iType = 1);
+	CBitmap* OnCreateIcon(int iBitWidth, int iBitHeight, int iID, WORD wAppliedColor, int iType = 1);
 
 	enum ArtTypes
 	{
@@ -197,15 +262,15 @@ class CBitmapDC : public CDC
 
 public:
 
-  CBitmapDC(int width, int height, COLORREF background = RGB(255,255,255));
+	CBitmapDC(int width, int height, COLORREF background = RGB(255, 255, 255));
 
-  virtual ~CBitmapDC();
-  CBitmap *Close();
+	virtual ~CBitmapDC();
+	CBitmap* Close();
 
 private:
 
-  CBitmap *m_pBitmap;
-  CBitmap *m_pOldBmp;
+	CBitmap* m_pBitmap;
+	CBitmap* m_pOldBmp;
 };
 
 #endif

@@ -222,7 +222,7 @@ private:
 
 	TCHAR		m_szURL[_MAX_PATH];	// URL to open when clicked
 
-#pragma pack(1)
+#pragma pack(push, 1)
 	typedef struct _STRUCT_ICONS
 	{
 		HICON		hIcon;			// Handle to icon
@@ -231,7 +231,7 @@ private:
 	} STRUCT_ICONS;
 #pragma pack()
 
-#pragma pack(1)
+#pragma pack(push, 1)
 	typedef struct _STRUCT_BITMAPS
 	{
 		HBITMAP		hBitmap;		// Handle to bitmap
@@ -242,7 +242,7 @@ private:
 	} STRUCT_BITMAPS;
 #pragma pack()
 
-#pragma pack(1)
+#pragma pack(push, 1)
 	typedef struct _STRUCT_CALLBACK
 	{
 		HWND		hWnd;			// Handle to window
@@ -258,7 +258,7 @@ private:
 	STRUCT_CALLBACK	m_csCallbacks;
 
 #ifdef	BTNST_USE_SOUND
-#pragma pack(1)
+#pragma pack(push, 1)
 	typedef struct _STRUCT_SOUND
 	{
 		TCHAR		szSound[_MAX_PATH];
