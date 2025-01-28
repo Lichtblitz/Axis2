@@ -147,7 +147,7 @@ bool SendToUO(CString Cmd)
 		//From Leviathan code (https://github.com/cbnolok/Leviathan)
 		pWnd->SendMessage(WM_KEYDOWN, VK_RETURN, (LPARAM)(1u | (0x1C << 16)));
 		std::this_thread::sleep_for(std::chrono::milliseconds(kDelayKeystrokes / 2));
-		pWnd->SendMessage(WM_KEYDOWN, WM_KEYUP, (LPARAM)(1u | (0x1C << 16) | (1 << 30) | (1 << 31)));
+		pWnd->SendMessage(WM_KEYUP, VK_RETURN, (LPARAM)(1u | (0x1C << 16) | (1 << 30) | (1 << 31)));
 
 		pWnd->SetForegroundWindow();
 	}

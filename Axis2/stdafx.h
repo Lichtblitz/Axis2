@@ -27,6 +27,8 @@
 
 #pragma once
 
+#define _AFXDLL
+
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
 #endif
