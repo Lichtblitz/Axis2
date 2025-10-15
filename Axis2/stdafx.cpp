@@ -138,6 +138,9 @@ bool SendToUO(CString Cmd)
 			EnumWindows(EnumWindowsProc, 1);
 			pWnd = CWnd::FromHandle(hwndUOClient);
 		}
+		
+		pWnd->SetForegroundWindow();
+
 		for (int i = 0; i < Cmd.GetLength(); i++)
 		{
 			pWnd->SendMessage(WM_CHAR, Cmd[i], 0);
@@ -148,8 +151,6 @@ bool SendToUO(CString Cmd)
 		pWnd->SendMessage(WM_KEYDOWN, VK_RETURN, (LPARAM)(1u | (0x1C << 16)));
 		std::this_thread::sleep_for(std::chrono::milliseconds(kDelayKeystrokes / 2));
 		pWnd->SendMessage(WM_KEYUP, VK_RETURN, (LPARAM)(1u | (0x1C << 16) | (1 << 30) | (1 << 31)));
-
-		pWnd->SetForegroundWindow();
 	}
 	return true;
 }
